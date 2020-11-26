@@ -71,12 +71,11 @@ services:
     image: stilliard/pure-ftpd
     container_name: pure-ftpd
     ports:
-      - "21:21"
-      - "30000-30009:30000-30009"
+      - 21:21
     volumes:
       - ./apps:/home/$FTP_USER_NAME/
       - ./ftpd/passwd:/etc/pure-ftpd/passwd
-    # uncomment for ssl/tls, see https://github.com/stilliard/docker-pure-ftpd#tls
+    # uncomment for ssl/tls:
     #  - "./ftpd/ssl:/etc/ssl/private/"
     environment:
       PUBLICHOST: $FTP_PUBLIC_HOST
