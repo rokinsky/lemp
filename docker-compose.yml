@@ -1,7 +1,7 @@
 version: '3'
-services:
 
-  #PHP Service
+services:
+  # PHP Service
   app:
     build:
       context: .
@@ -20,29 +20,29 @@ services:
     networks:
       - app-network
 
-  #Nginx Service
+  # Nginx Service
   webserver:
     image: nginx:alpine
     container_name: webserver
     restart: unless-stopped
     tty: true
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     volumes:
       - ./apps:/var/www
       - ./nginx/conf.d/:/etc/nginx/conf.d/
     networks:
       - app-network
 
-  #MySQL Service
+  # MySQL Service
   db:
-    image: mysql:5.7.22
+    image: mysql:8
     container_name: db
     restart: unless-stopped
     tty: true
     ports:
-      - "3306:3306"
+      - 3306:3306
     environment:
       MYSQL_DATABASE: laravel
       MYSQL_ROOT_PASSWORD: your_mysql_root_password
@@ -54,7 +54,16 @@ services:
     networks:
       - app-network
 
-  #FTPD Service
+  # Adminer Service
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - app-network
+
+  # FTPD Service
   ftpd:
     image: stilliard/pure-ftpd
     container_name: pure-ftpd
@@ -77,12 +86,12 @@ services:
     networks:
       - app-network
 
-#Docker Networks
+# Docker Networks
 networks:
   app-network:
     driver: bridge
 
-#Volumes
+# Volumes
 volumes:
   dbdata:
     driver: local
