@@ -11,8 +11,8 @@ services:
     restart: unless-stopped
     tty: true
     environment:
-      SERVICE_NAME: app
-      SERVICE_TAGS: dev
+      SERVICE_NAME: $APP_SERVICE_NAME
+      SERVICE_TAGS: $APP_SERVICE_TAGS
     working_dir: /var/www
     volumes:
       - ./apps:/var/www
@@ -44,10 +44,10 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_DATABASE: laravel
-      MYSQL_ROOT_PASSWORD: your_mysql_root_password
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
+      MYSQL_DATABASE: $DB_MYSQL_DATABASE
+      MYSQL_ROOT_PASSWORD: $DB_MYSQL_ROOT_PASSWORD
+      SERVICE_NAME: $DB_SERVICE_NAME
+      SERVICE_TAGS: $DB_SERVICE_TAGS
     volumes:
       - dbdata:/var/lib/mysql/
       - ./mysql/conf.cnf:/etc/mysql/conf.cnf
@@ -72,15 +72,15 @@ services:
       - "21:21"
       - "30000-30009:30000-30009"
     volumes:
-      - ./apps:/home/username/
+      - ./apps:/home/$FTP_USER_NAME/
       - ./ftpd/passwd:/etc/pure-ftpd/passwd
     # uncomment for ssl/tls, see https://github.com/stilliard/docker-pure-ftpd#tls
-    #  - "./folder_on_disk/ssl:/etc/ssl/private/"
+    #  - "./ftpd/ssl:/etc/ssl/private/"
     environment:
-      PUBLICHOST: "localhost"
-      FTP_USER_NAME: username
-      FTP_USER_PASS: mypass
-      FTP_USER_HOME: /home/username
+      PUBLICHOST: $FTP_PUBLIC_HOST
+      FTP_USER_NAME: $FTP_USER_NAME
+      FTP_USER_PASS: $FTP_USER_PASS
+      FTP_USER_HOME: /home/$FTP_USER_NAME
     # also for ssl/tls:
     #  ADDED_FLAGS: "--tls=2"
     restart: always
