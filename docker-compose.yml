@@ -69,11 +69,11 @@ services:
 
   # FTPD Service
   ftpd:
-    image: stilliard/pure-ftpd
+    image: stilliard/pure-ftpd:hardened
     container_name: pure-ftpd
     ports:
       - "21:21"
-      - "30000-30009:30000-30009"
+      - "30000-30099:30000-30099"
     volumes:
       - ./apps:/home/$FTP_USER_NAME/
     # uncomment for ssl/tls:
@@ -83,6 +83,9 @@ services:
       FTP_USER_NAME: $FTP_USER_NAME
       FTP_USER_PASS: $FTP_USER_PASS
       FTP_USER_HOME: /home/$FTP_USER_NAME
+      FTP_MAX_CLIENTS: 99
+      FTP_MAX_CONNECTIONS: 99
+      FTP_PASSIVE_PORTS: 30000:30099
     # also for ssl/tls:
     #  ADDED_FLAGS: "--tls=2"
     restart: always
